@@ -6,6 +6,7 @@ public class PLayerController : MonoBehaviour
 {
     [SerializeField] float forwardSpeed = 1;
     [SerializeField] float sideSpeeds = 1;
+    [SerializeField] float mousespeed = 1;
 
     Rigidbody playerRigidbody;
 
@@ -17,6 +18,7 @@ public class PLayerController : MonoBehaviour
 
     void Update()
     {
+       
     }
 
     //тот же Update, но обновляется через фиксированное кол-во времени 
@@ -30,9 +32,19 @@ public class PLayerController : MonoBehaviour
 
         //deltaTime - частота обновления объекта, fixedDeltaTime - постоянная величина
 
-        playerRigidbody.AddForce(new Vector3(horizontal * Time.fixedDeltaTime * forwardSpeed, 0, vertical * Time.fixedDeltaTime * sideSpeeds));
+        Vector3 force = Vector3.zero;
+        force += transform.forward* vertical  *Time.fixedDeltaTime * forwardSpeed;
+        force += transform.right * horizontal * Time.fixedDeltaTime * sideSpeeds;
+
+        playerRigidbody.AddForce(force);
+
+        float xMouseMovement = Input.GetAxis("Mouse X");
+
+        transform.Rotate(new Vector3(0, xMouseMovement, 0));
 
         //transform.position += new Vector3(horizontal * Time.deltaTime, 0, vertical * Time.deltaTime);
+
+
 
     }
 }
